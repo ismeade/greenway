@@ -1,17 +1,19 @@
 package com.ade.extra.greenway.security.domain;
 
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 @Data
-@SuperBuilder
-public class JwtUser {
+public class JwtToken {
 
-    private Long userId;
-
+    private final String username;
     private final Collection<? extends GrantedAuthority> authorities;
+
+    public JwtToken(String username, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.authorities = authorities;
+    }
 
 }

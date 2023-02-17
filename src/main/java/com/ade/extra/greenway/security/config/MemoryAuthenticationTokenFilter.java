@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+public class MemoryAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final TokenServiceImpl tokenServiceImpl;
 

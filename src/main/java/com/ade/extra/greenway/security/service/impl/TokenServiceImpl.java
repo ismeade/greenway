@@ -1,8 +1,8 @@
-package com.ade.extra.greenway.security.service;
+package com.ade.extra.greenway.security.service.impl;
 
-import com.ade.extra.greenway.repository.TUserRepository;
-import com.ade.extra.greenway.repository.entity.TUser;
-import com.ade.extra.greenway.security.domain.JwtUser;
+import com.ade.extra.greenway.security.domain.JwtToken;
+import com.ade.extra.greenway.repository.SysUserRepository;
+import com.ade.extra.greenway.security.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,23 +22,45 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class JwtService {
+public class TokenServiceImpl implements TokenService {
 
-    protected final TUserRepository tUserRepository;
+    protected final SysUserRepository sysUserRepository;
 
-    @Value("${jwt.secret:123}")
+    @Value("${jwt.secret:20230217161800}")
     private String secret;
-    @Value("${jwt.exp:123}")
+    @Value("${jwt.exp:3600000}")
     private Long exp;
 
-    public String create(JwtUser jwtUser) {
+    @Override
+    public String generalToken(JwtToken jwtToken) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("userId", jwtUser.getUserId());
-//        claims.put("openId", jwtUser.getOpenId());
-        claims.put("auths", jwtUser.getAuthorities().stream()
+        claims.put("username", jwtToken.getUsername());
+        claims.put("auths", jwtToken.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         log.info("claims: {}", claims);
         return create(claims);
+    }
+
+    @Override
+    public JwtToken analysisToken(String token) {
+        // 签名秘钥，和生成的签名的秘钥一模一样
+        SecretKey key = generalKey();
+        try {
+            Claims claims = Jwts.parser() // 得到DefaultJwtParser
+                    .setSigningKey(key) // 设置签名的秘钥
+                    .parseClaimsJws(token).getBody();
+            final List<?> auths = claims.get("auths", List.class);
+            return new JwtToken(
+                    claims.get("username", String.class),
+                    auths.stream()
+                            .map(String.class::cast)
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList())
+            );
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage(), e);
+        } // 设置需要解析的jwt
+        return null;
     }
 
     private String create(Map<String, Object> claims) {
@@ -55,41 +77,6 @@ public class JwtService {
     private SecretKey generalKey() {
         byte[] encodedKey = Base64.encodeBase64(secret.getBytes());
         return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
-    }
-
-    /**
-     * 验证jwt
-     */
-    public Optional<JwtUser> verify(String jwt) {
-        // 签名秘钥，和生成的签名的秘钥一模一样
-        SecretKey key = generalKey();
-        try {
-            Claims claims = Jwts.parser() // 得到DefaultJwtParser
-                    .setSigningKey(key) // 设置签名的秘钥
-                    .parseClaimsJws(jwt).getBody();
-            final List<?> auths = claims.get("auths", List.class);
-            JwtUser jwtUser = JwtUser.builder()
-                    .userId(claims.get("userId", Long.class))
-//                    .openId(claims.get("openId", String.class))
-                    .authorities(auths.stream().map(String.class::cast).map(SimpleGrantedAuthority::new).collect(Collectors.toList()))
-                    .build();
-            return Optional.of(jwtUser);
-        } catch (Exception e) {
-            log.error(e.getLocalizedMessage(), e);
-        } // 设置需要解析的jwt
-        return Optional.empty();
-    }
-
-    private final List<String> auths = Collections.singletonList("guest");
-
-    public JwtUser getJwtUser(String name) {
-        final TUser tMpUser = tUserRepository.findByUsername(name)
-                .orElseThrow(() -> new IllegalArgumentException(""));
-
-        return JwtUser.builder()
-                .userId(tMpUser.getId())
-                .authorities(auths.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()))
-                .build();
     }
 
 }
