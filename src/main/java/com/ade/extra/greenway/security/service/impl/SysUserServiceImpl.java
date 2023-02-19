@@ -1,6 +1,6 @@
 package com.ade.extra.greenway.security.service.impl;
 
-import com.ade.extra.greenway.security.domain.JwtToken;
+import com.ade.extra.greenway.security.domain.Token;
 import com.ade.extra.greenway.exception.ErrorCode;
 import com.ade.extra.greenway.exception.ReturnException;
 import com.ade.extra.greenway.repository.SysUserRepository;
@@ -32,8 +32,8 @@ public class SysUserServiceImpl implements SysUserService, InitializingBean {
         if (!Objects.equals(DigestUtils.md5DigestAsHex(password.getBytes()), sysUser.getPassword())) {
             throw new ReturnException(ErrorCode.ERROR_LOGIN_PASSWORD_NOT_MATCH);
         }
-        JwtToken jwtToken = new JwtToken(username, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-        return tokenServiceImpl.generalToken(jwtToken);
+        Token token = new Token(username, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        return tokenServiceImpl.generalToken(token);
     }
 
     @Override

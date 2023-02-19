@@ -1,6 +1,6 @@
-package com.ade.extra.greenway.security.config;
+package com.ade.extra.greenway.security.component;
 
-import com.ade.extra.greenway.security.domain.JwtToken;
+import com.ade.extra.greenway.security.domain.Token;
 import com.ade.extra.greenway.security.service.impl.TokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         log.info("uri: {}, Authorization: {}", request.getRequestURI(), authHeader);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
-            final JwtToken jwtToken = tokenServiceImpl.analysisToken(token);
+            final Token jwtToken = tokenServiceImpl.analysisToken(token);
             if (null != jwtToken) {
                 log.info(jwtToken.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {

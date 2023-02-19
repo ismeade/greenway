@@ -2,6 +2,8 @@ package com.ade.extra.greenway.exception;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Optional;
+
 /**
  * 自定义异常
  */
@@ -10,22 +12,20 @@ public class ReturnException extends IllegalArgumentException {
     private static final long serialVersionUID = 1L;
 
     protected HttpStatus httpStatus;
-    protected String code;
-    protected String message;
+    protected ErrorMessage errorMessage;
 
-    public ReturnException(HttpStatus httpStatus, String code, String message) {
+    public ReturnException(HttpStatus httpStatus, String error) {
         this.httpStatus = httpStatus;
-        this.code = code;
-        this.message = message;
+        this.errorMessage = ErrorMessage.failed(error);
     }
 
-    public ReturnException(String message) {
-        this(HttpStatus.INTERNAL_SERVER_ERROR, "SYSTEM_ERROR", message);
+    public ReturnException(String error) {
+        this(HttpStatus.INTERNAL_SERVER_ERROR, error);
 
     }
 
     public ReturnException(ErrorCode errorCode) {
-        this(errorCode.getHttpStatus(), errorCode.getCode(), errorCode.getMessage());
+        this(errorCode.getHttpStatus(), errorCode.getMessage());
     }
 
     public ReturnException() {
@@ -36,13 +36,11 @@ public class ReturnException extends IllegalArgumentException {
         return httpStatus;
     }
 
-    public String getCode() {
-        return code;
-    }
-
     @Override
     public String getMessage() {
-        return this.message;
+        return Optional.ofNullable(this.errorMessage)
+                .map(ErrorMessage::getError)
+                .orElse("");
     }
 
 }

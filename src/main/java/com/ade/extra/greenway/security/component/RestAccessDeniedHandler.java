@@ -1,6 +1,6 @@
 package com.ade.extra.greenway.security.component;
 
-import com.ade.extra.greenway.common.GeneralResult;
+import com.ade.extra.greenway.exception.ErrorMessage;
 import com.alibaba.fastjson.JSON;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 没有接口权限时，返回的结果
+ * 没有接口权限
  */
 @Configuration
-public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request,
@@ -22,7 +22,8 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().println(JSON.toJSON(GeneralResult.failed(e.getMessage())));
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().println(JSON.toJSON(ErrorMessage.failed(e.getMessage())));
         response.getWriter().flush();
     }
 

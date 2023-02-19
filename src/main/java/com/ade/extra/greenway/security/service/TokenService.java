@@ -1,11 +1,11 @@
 package com.ade.extra.greenway.security.service;
 
-import com.ade.extra.greenway.security.domain.JwtToken;
+import com.ade.extra.greenway.security.domain.Token;
 
 public interface TokenService {
 
-    String generalToken(JwtToken jwtToken);
+    String generalToken(Token token);
 
-    JwtToken analysisToken(String token);
+    Token analysisToken(String token);
 
 }

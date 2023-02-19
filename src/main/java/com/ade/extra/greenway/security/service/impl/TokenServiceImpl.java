@@ -1,6 +1,6 @@
 package com.ade.extra.greenway.security.service.impl;
 
-import com.ade.extra.greenway.security.domain.JwtToken;
+import com.ade.extra.greenway.security.domain.Token;
 import com.ade.extra.greenway.repository.SysUserRepository;
 import com.ade.extra.greenway.security.service.TokenService;
 import io.jsonwebtoken.Claims;
@@ -28,21 +28,22 @@ public class TokenServiceImpl implements TokenService {
 
     @Value("${jwt.secret:20230217161800}")
     private String secret;
-    @Value("${jwt.exp:3600000}")
+    @Value("${jwt.exp:86400}")
     private Long exp;
 
     @Override
-    public String generalToken(JwtToken jwtToken) {
+    public String generalToken(Token token) {
+
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", jwtToken.getUsername());
-        claims.put("auths", jwtToken.getAuthorities().stream()
+        claims.put("username", token.getUsername());
+        claims.put("auths", token.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         log.info("claims: {}", claims);
         return create(claims);
     }
 
     @Override
-    public JwtToken analysisToken(String token) {
+    public Token analysisToken(String token) {
         // 签名秘钥，和生成的签名的秘钥一模一样
         SecretKey key = generalKey();
         try {
@@ -50,7 +51,7 @@ public class TokenServiceImpl implements TokenService {
                     .setSigningKey(key) // 设置签名的秘钥
                     .parseClaimsJws(token).getBody();
             final List<?> auths = claims.get("auths", List.class);
-            return new JwtToken(
+            return new Token(
                     claims.get("username", String.class),
                     auths.stream()
                             .map(String.class::cast)

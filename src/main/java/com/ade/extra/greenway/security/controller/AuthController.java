@@ -1,7 +1,7 @@
 package com.ade.extra.greenway.security.controller;
 
-import com.ade.extra.greenway.common.GeneralResult;
 import com.ade.extra.greenway.security.controller.vo.PasswordLoginRequest;
+import com.ade.extra.greenway.security.controller.vo.PasswordLoginResponse;
 import com.ade.extra.greenway.security.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +22,15 @@ public class AuthController {
     private final SysUserService sysUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<GeneralResult<String>> login(@Valid @RequestBody PasswordLoginRequest passwordLoginRequest) {
+    public ResponseEntity<PasswordLoginResponse> login(@Valid @RequestBody PasswordLoginRequest passwordLoginRequest) {
         log.info("login request: {}", passwordLoginRequest);
         final String token = sysUserService.login(passwordLoginRequest.getUsername(), passwordLoginRequest.getPassword());
         log.info("token: {}", token);
-        return ResponseEntity.ok(GeneralResult.success(token));
+        return ResponseEntity.ok(PasswordLoginResponse.builder().token(token).build());
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ROLE_GUEST')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> admin() {
         return ResponseEntity.ok("hello");
     }
