@@ -15,16 +15,19 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/sys/auth")
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ROLE_GUEST')") // hasRole需要带前缀写法 ROLE_xxxx 同时userDetails的权限里也有ROLE_xxxx
-//@PreAuthorize("hasAuthority('auth')") // userDetails包含auth就行
+// @PreAuthorize("hasRole('ROLE_GUEST')") // hasRole需要带前缀写法 ROLE_xxxx
+// 同时userDetails的权限里也有ROLE_xxxx
+// @PreAuthorize("hasAuthority('auth')") // userDetails包含auth就行
 public class AuthController {
 
     private final SysUserService sysUserService;
 
     @PostMapping("/login")
+    @PreAuthorize("hasRole('ROLE_GUEST')")
     public ResponseEntity<PasswordLoginResponse> login(@Valid @RequestBody PasswordLoginRequest passwordLoginRequest) {
         log.info("login request: {}", passwordLoginRequest);
-        final String token = sysUserService.login(passwordLoginRequest.getUsername(), passwordLoginRequest.getPassword());
+        final String token = sysUserService.login(passwordLoginRequest.getUsername(),
+                passwordLoginRequest.getPassword());
         log.info("token: {}", token);
         return ResponseEntity.ok(PasswordLoginResponse.builder().token(token).build());
     }

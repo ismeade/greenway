@@ -28,8 +28,7 @@ public class SecurityConfig {
                 // 关闭csrf
                 .csrf().disable()
                 // 关闭session
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity
                 // 禁用缓存
@@ -37,18 +36,15 @@ public class SecurityConfig {
 
         httpSecurity.authorizeRequests()
                 // 允许未登陆用户访问
-                .antMatchers("/sys/auth/login").permitAll()
+                .antMatchers("/html/**").permitAll()
                 // 其余url全部需要认证
                 .anyRequest().authenticated();
 
         // 在UsernamePasswordAuthenticationFilter前添加filter
-        httpSecurity
-                .addFilterBefore(jwtAuthenticationTokenFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 异常处理
-        httpSecurity
-                .exceptionHandling()
+        httpSecurity.exceptionHandling()
                 // 权限不足处理器
                 .accessDeniedHandler(restAccessDeniedHandler)
                 // 认证失败处理器

@@ -32,7 +32,7 @@ public class SysUserServiceImpl implements SysUserService, InitializingBean {
         if (!Objects.equals(DigestUtils.md5DigestAsHex(password.getBytes()), sysUser.getPassword())) {
             throw new ReturnException(ErrorCode.ERROR_LOGIN_PASSWORD_NOT_MATCH);
         }
-        Token token = new Token(username, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        Token token = new Token(username, Collections.singletonList(new SimpleGrantedAuthority(sysUser.getRole())));
         return tokenServiceImpl.generalToken(token);
     }
 
@@ -42,6 +42,7 @@ public class SysUserServiceImpl implements SysUserService, InitializingBean {
             SysUser sysUser = new SysUser();
             sysUser.setUsername("admin");
             sysUser.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+            sysUser.setRole("ROLE_ADMIN");
             sysUserRepository.saveAndFlush(sysUser);
             return sysUser;
         });
