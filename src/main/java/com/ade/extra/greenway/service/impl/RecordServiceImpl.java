@@ -25,14 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 public class RecordServiceImpl implements RecordService {
 
     private final BizRecordRepository bizRecordRepository;
-    private final RecordMapper recordMapper;
 
     @Override
     public List<RecordDto> findRecord(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
         log.info("startTime: {}, endTime: {}, pageable: {}", startTime, endTime, pageable);
         Page<BizRecord> bizRecordPage = bizRecordRepository.findByCreateTimeBetween(startTime, endTime, pageable);
 
-        return recordMapper.toDto(bizRecordPage.getContent());
+        return RecordMapper.INSTANCE.toDto(bizRecordPage.getContent());
     }
 
 }

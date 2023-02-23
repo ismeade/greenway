@@ -27,7 +27,6 @@ import java.util.List;
 public class RecordController {
 
     private final RecordService recordService;
-    private final RecordMapper recordMapper;
 
     @GetMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -40,6 +39,6 @@ public class RecordController {
                 TimeUtil.toDate(endTime),
                 PageRequest.of(page, pageSize));
 
-        return ResponseEntity.ok().body(recordMapper.toVo(record));
+        return ResponseEntity.ok().body(RecordMapper.INSTANCE.toVo(record));
     }
 }
