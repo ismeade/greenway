@@ -10,8 +10,11 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
+/**
+ * 预约
+ */
 @Data
-@Entity
+@Entity(name = "biz_appointment")
 public class BizAppointment {
 
     @Id
@@ -19,6 +22,8 @@ public class BizAppointment {
     private Long id;
     @Column(name = "car_no")
     private String carNo;
+    @Column(name = "appointment_time")
+    private LocalDateTime appointmentTime;
     @Column(name = "create_time")
     private LocalDateTime createTime;
 

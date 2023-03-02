@@ -1,9 +1,9 @@
 package com.ade.extra.greenway.mapstruct;
 
 
-import com.ade.extra.greenway.controller.vo.RecordVo;
-import com.ade.extra.greenway.repository.entity.BizRecord;
-import com.ade.extra.greenway.service.dto.RecordDto;
+import com.ade.extra.greenway.controller.vo.PassRecordVo;
+import com.ade.extra.greenway.repository.entity.BizPassRecord;
+import com.ade.extra.greenway.service.dto.PassRecordDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -15,22 +15,22 @@ import java.util.List;
  * 排序vo dto domain转化mapper
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface RecordMapper {
+public interface PassRecordMapper {
 
-    RecordMapper INSTANCE = Mappers.getMapper(RecordMapper.class);
+    PassRecordMapper INSTANCE = Mappers.getMapper(PassRecordMapper.class);
 
-    RecordDto toDto(BizRecord bizRecord);
+    PassRecordDto toDto(BizPassRecord bizPassRecord);
 
-    List<RecordDto> toDto(List<BizRecord> bizRecordList);
+    List<PassRecordDto> toDto(List<BizPassRecord> bizPassRecordList);
 
     @Mapping(source = "createTime",
             target = "createTime",
             dateFormat = "yyyy-MM-dd HH:mm:ss")
-    RecordVo toVo(RecordDto recordDto);
+    PassRecordVo toVo(PassRecordDto passRecordDto);
 
 //    @Mapping(source = "createTime",
 //            target = "createTime",
 //            dateFormat = "yyyy-MM-dd HH:mm:ss")
-    List<RecordVo> toVo(List<RecordDto> recordDtoList);
+    List<PassRecordVo> toVo(List<PassRecordDto> passRecordDtoList);
 
 }

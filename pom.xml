@@ -67,6 +67,13 @@
             <version>${org.mapstruct.version}</version>
         </dependency>
 
+        <!--读串口-->
+        <dependency>
+            <groupId>com.github.purejavacomm</groupId>
+            <artifactId>purejavacomm</artifactId>
+            <version>1.0.2.RELEASE</version>
+        </dependency>
+
         <!-- lombok dependencies should not end up on classpath -->
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CarController {
 
-    // appointment
+    /**
+     * 车辆预约
+     * @param carNo 车牌号
+     * @return 预约结果
+     */
     @PostMapping("/{carNo}/appointments")
     @PreAuthorize("hasRole('ROLE_GUEST')")
     public ResponseEntity<Object> createAppointment(@PathVariable String carNo) {

@@ -4,8 +4,11 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * 登录用户
+ */
 @Data
-@Entity
+@Entity(name = "sys_name")
 public class SysUser {
 
     @Id

@@ -3,12 +3,12 @@ package com.ade.extra.greenway.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.ade.extra.greenway.mapstruct.RecordMapper;
+import com.ade.extra.greenway.mapstruct.PassRecordMapper;
 import com.ade.extra.greenway.repository.BizRecordRepository;
-import com.ade.extra.greenway.repository.entity.BizRecord;
-import com.ade.extra.greenway.service.RecordService;
+import com.ade.extra.greenway.repository.entity.BizPassRecord;
+import com.ade.extra.greenway.service.PassRecordService;
 
-import com.ade.extra.greenway.service.dto.RecordDto;
+import com.ade.extra.greenway.service.dto.PassRecordDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RecordServiceImpl implements RecordService {
+public class PassRecordServiceImpl implements PassRecordService {
 
     private final BizRecordRepository bizRecordRepository;
 
     @Override
-    public List<RecordDto> findRecord(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
+    public List<PassRecordDto> findRecord(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
         log.info("startTime: {}, endTime: {}, pageable: {}", startTime, endTime, pageable);
-        Page<BizRecord> bizRecordPage = bizRecordRepository.findByCreateTimeBetween(startTime, endTime, pageable);
+        Page<BizPassRecord> bizRecordPage = bizRecordRepository.findByCreateTimeBetween(startTime, endTime, pageable);
 
-        return RecordMapper.INSTANCE.toDto(bizRecordPage.getContent());
+        return PassRecordMapper.INSTANCE.toDto(bizRecordPage.getContent());
     }
 
 }
