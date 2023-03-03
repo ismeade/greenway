@@ -5,10 +5,10 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * 登录用户
+ * 系统用户
  */
 @Data
-@Entity(name = "sys_name")
+@Entity(name = "sys_user")
 public class SysUser {
 
     @Id

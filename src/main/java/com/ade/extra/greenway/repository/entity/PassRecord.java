@@ -10,13 +10,15 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity(name = "biz_pass_record")
-public class BizPassRecord {
+public class PassRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "car_no")
     private String carNo;
+    @Column(name = "reserved")
+    private Integer reserved;
     @Column(name = "pic_front")
     private String picFront;
     @Column(name = "pic_back")
@@ -25,6 +27,8 @@ public class BizPassRecord {
     private String picTop;
     @Column(name = "pic_x")
     private String picX;
+    @Column(name = "status")
+    private Integer status;
     @Column(name = "pass_time")
     private LocalDateTime passTime;
     @Column(name = "create_time")

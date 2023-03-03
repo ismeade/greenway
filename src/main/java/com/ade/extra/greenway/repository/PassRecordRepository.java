@@ -2,7 +2,7 @@ package com.ade.extra.greenway.repository;
 
 import java.time.LocalDateTime;
 
-import com.ade.extra.greenway.repository.entity.BizPassRecord;
+import com.ade.extra.greenway.repository.entity.PassRecord;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
  * BizRecordRepository
  */
 @Repository
-public interface BizRecordRepository extends JpaRepository<BizPassRecord, Long> {
+public interface PassRecordRepository extends JpaRepository<PassRecord, Long> {
 
-    Page<BizPassRecord> findByCreateTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+    Page<PassRecord> findByCreateTimeBetween(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
 
 }

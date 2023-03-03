@@ -10,21 +10,21 @@ public class ControlServiceImpl implements ControlService {
 
     @Override
     public void signalLight(int status) {
-        //TODO
+        //TODO 信号灯
     }
 
     @Override
     public void roadblock(int status) {
-        //TODO
+        //TODO 路障
     }
 
     @Override
     public void shootX(int status) {
-        //TODO
+        //TODO x发射端
     }
 
     @Override
     public void receiveX(int status) {
-        //TODO
+        //TODO x接收端
     }
 }

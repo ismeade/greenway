@@ -11,11 +11,11 @@ import javax.persistence.Id;
 import lombok.Data;
 
 /**
- * 预约
+ * 车辆预约
  */
 @Data
 @Entity(name = "biz_appointment")
-public class BizAppointment {
+public class CarReserve {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

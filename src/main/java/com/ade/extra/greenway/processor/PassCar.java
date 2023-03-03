@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class PassCar {
 
+    PassCar() {}
+
     /**
      * 车牌号
      */
@@ -15,6 +17,11 @@ public class PassCar {
      * 0初始化 1
      */
     private int status;
+
+    /**
+     * true 已预约 false 未预约
+     */
+    private boolean reserved;
 
     public void carWait() {
         try {

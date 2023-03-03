@@ -2,7 +2,7 @@ package com.ade.extra.greenway.mapstruct;
 
 
 import com.ade.extra.greenway.controller.vo.PassRecordVo;
-import com.ade.extra.greenway.repository.entity.BizPassRecord;
+import com.ade.extra.greenway.repository.entity.PassRecord;
 import com.ade.extra.greenway.service.dto.PassRecordDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,9 +19,9 @@ public interface PassRecordMapper {
 
     PassRecordMapper INSTANCE = Mappers.getMapper(PassRecordMapper.class);
 
-    PassRecordDto toDto(BizPassRecord bizPassRecord);
+    PassRecordDto toDto(PassRecord passRecord);
 
-    List<PassRecordDto> toDto(List<BizPassRecord> bizPassRecordList);
+    List<PassRecordDto> toDto(List<PassRecord> passRecordList);
 
     @Mapping(source = "createTime",
             target = "createTime",
